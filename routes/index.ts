@@ -9,8 +9,11 @@ router.use("/register", registerController);
 router.use("/login", loginController);
 router.use("/refresh", refreshController);
 
-router.get("/test", (req, res) => {
-  res.send("Auth Service Running");
+router.get("/", (req, res) => {
+  res.json({
+    message: "Authentication service running",
+    availableEndpoints: ["register", "login", "refresh"],
+  });
 });
 
 export default router;
