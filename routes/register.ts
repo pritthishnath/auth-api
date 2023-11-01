@@ -6,6 +6,7 @@ import { Router } from "express";
 import { generateToken } from "../utils/tokenUtility";
 import { UserModel } from "../models/User";
 import { hashPassword } from "../utils/passwordUtility";
+import { TTokenData } from "../types/types";
 
 const router = Router();
 
@@ -39,7 +40,10 @@ router.post("/", async (req, res) => {
 
     const newUser = await UserModel.create(newUserData);
 
-    const tokenData = { userId: newUser._id, username: newUser.username };
+    const tokenData: TTokenData = {
+      userId: newUser._id,
+      username: newUser.username,
+    };
 
     const [accessToken, refreshToken] = generateToken(tokenData);
 

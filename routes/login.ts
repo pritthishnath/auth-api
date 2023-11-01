@@ -6,6 +6,7 @@ import { Router } from "express";
 import { UserModel } from "../models/User";
 import { comparePassword } from "../utils/passwordUtility";
 import { generateToken } from "../utils/tokenUtility";
+import { TTokenData } from "../types/types";
 
 const router = Router();
 
@@ -36,7 +37,7 @@ router.post("/", async (req, res) => {
         .json({ error: true, message: "Invalid credentials!" });
     }
 
-    const tokenData = { userId: user._id, username: user.username };
+    const tokenData: TTokenData = { userId: user._id, username: user.username };
 
     const [accessToken, refreshToken] = generateToken(tokenData);
 
