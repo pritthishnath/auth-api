@@ -43,4 +43,5 @@ jobs:
           port: 22
           script: |
             cd ${{ secrets.DIR_PATH }}
+            git stash && git pull origin main
             sudo pm2 start
