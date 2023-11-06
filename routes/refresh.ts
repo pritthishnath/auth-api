@@ -1,5 +1,5 @@
 /**
- * @route POST /auth/refresh
+ * @route POST /refresh
  */
 
 import { Router } from "express";
@@ -10,8 +10,12 @@ import { generateToken } from "../utils/tokenUtility";
 
 const router = Router();
 
+type TRefreshReqBody = {
+  refreshToken: string;
+};
+
 router.post("/", async (req, res) => {
-  const refreshToken = req.body.refreshToken;
+  const { refreshToken }: TRefreshReqBody = req.body;
   try {
     const foundUser = await UserModel.findOne({ refreshToken }).exec();
 

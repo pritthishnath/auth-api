@@ -1,5 +1,5 @@
 /**
- * @route POST /auth/register
+ * @route POST /register
  */
 
 import { Router } from "express";
