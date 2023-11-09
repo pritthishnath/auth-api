@@ -25,9 +25,8 @@ router.put("/", async (req, res) => {
       (rt) => rt != refreshToken
     );
 
-    const result = await foundUser.save();
+    await foundUser.save();
 
-    console.log(result);
     return res.sendStatus(200);
   } catch (error) {
     return res.sendStatus(500);

@@ -19,7 +19,6 @@ type TRegisterReqBody = {
 
 router.post("/", async (req, res) => {
   const { name, username, email, password }: TRegisterReqBody = req.body;
-  console.log(username, password);
 
   try {
     const user = await UserModel.exists({ $or: [{ email }, { username }] });
