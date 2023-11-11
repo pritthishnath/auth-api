@@ -5,18 +5,16 @@
 import { Router } from "express";
 import { UserModel } from "../models/User";
 import jwt, { VerifyCallback } from "jsonwebtoken";
-import { TTokenData } from "../types/types";
-import { generateToken } from "../utils/tokenUtility";
+import { TokenDataType } from "../types/types";
+import { generateToken } from "../utils";
 
 const router = Router();
 
-type TRefreshReqBody = {
-  refreshToken: string;
-};
-
 router.post("/", async (req, res) => {
-  const { refreshToken }: TRefreshReqBody = req.body;
+  const { refreshToken } = req.body;
   try {
+    if (!refreshToken) return res.sendStatus(401);
+
     const foundUser = await UserModel.findOne({ refreshToken }).exec();
 
     if (!foundUser) {
@@ -31,7 +29,7 @@ router.post("/", async (req, res) => {
          */
 
         const user = await UserModel.findOne({
-          username: (<TTokenData>decoded).username,
+          username: (<TokenDataType>decoded).username,
         }).exec();
 
         if (user?.refreshToken) {
@@ -62,10 +60,10 @@ router.post("/", async (req, res) => {
         foundUser.refreshToken = [...newRefTokenArray];
         await foundUser.save();
       }
-      if (err || (<TTokenData>decoded).username !== foundUser.username)
+      if (err || (<TokenDataType>decoded).username !== foundUser.username)
         return res.sendStatus(401);
 
-      const tokenData: TTokenData = {
+      const tokenData: TokenDataType = {
         userId: foundUser._id,
         username: foundUser.username,
       };

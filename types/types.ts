@@ -4,7 +4,7 @@
 
 import { Types } from "mongoose";
 
-export type TTokenData = {
+export type TokenDataType = {
   userId: Types.ObjectId;
   username: string;
 };

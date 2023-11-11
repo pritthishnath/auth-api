@@ -5,20 +5,13 @@
 import { Router } from "express";
 import { generateToken } from "../utils/tokenUtility";
 import { UserModel } from "../models/User";
-import { hashPassword } from "../utils/passwordUtility";
-import { TTokenData } from "../types/types";
+import { hashPassword } from "../utils";
+import { TokenDataType } from "../types/types";
 
 const router = Router();
 
-type TRegisterReqBody = {
-  name: string;
-  username: string;
-  email: string;
-  password: string;
-};
-
 router.post("/", async (req, res) => {
-  const { name, username, email, password }: TRegisterReqBody = req.body;
+  const { name, username, email, password } = req.body;
 
   try {
     const user = await UserModel.exists({ $or: [{ email }, { username }] });
@@ -39,7 +32,7 @@ router.post("/", async (req, res) => {
 
     const newUser = await UserModel.create(newUserData);
 
-    const tokenData: TTokenData = {
+    const tokenData: TokenDataType = {
       userId: newUser._id,
       username: newUser.username,
     };
@@ -52,7 +45,7 @@ router.post("/", async (req, res) => {
 
     res.status(200).json({ error: false, accessToken, refreshToken });
   } catch (error) {
-    res.status(500).json({ error: true, message: `Internal server error!` });
+    res.sendStatus(500);
   }
 });
 

@@ -7,12 +7,8 @@ import { UserModel } from "../models/User";
 
 const router = Router();
 
-type TLogoutReqBody = {
-  refreshToken: string;
-};
-
-router.put("/", async (req, res) => {
-  const { refreshToken }: TLogoutReqBody = req.body;
+router.post("/", async (req, res) => {
+  const { refreshToken } = req.body;
 
   try {
     const foundUser = await UserModel.findOne({ refreshToken }).exec();
