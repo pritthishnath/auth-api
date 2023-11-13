@@ -35,7 +35,7 @@ router.get("/server-key", (req, res) => {
 
   setTimeout(() => {
     serverTokens.delete(key);
-  }, 60 * 1000 * 10); // Unused server tokens expires in 10 minutes
+  }, 60 * 1000 * 5); // Unused server tokens expires in 5 minutes
 
   res.json({ error: false, serverKey: key });
 });
