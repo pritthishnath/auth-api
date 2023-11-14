@@ -43,7 +43,9 @@ router.post("/", async (req, res) => {
 
     await newUser.save();
 
-    res.status(200).json({ error: false, accessToken, refreshToken });
+    res
+      .status(200)
+      .json({ error: false, user: newUser, accessToken, refreshToken });
   } catch (error) {
     res.sendStatus(500);
   }

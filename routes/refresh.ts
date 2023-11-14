@@ -13,7 +13,7 @@ const router = Router();
 router.post("/", async (req, res) => {
   const { refreshToken } = req.body;
   try {
-    if (!refreshToken) return res.sendStatus(401);
+    if (!refreshToken) return res.sendStatus(403);
 
     const foundUser = await UserModel.findOne({ refreshToken }).exec();
 
@@ -21,7 +21,7 @@ router.post("/", async (req, res) => {
       //! Refresh token reuse detected!
 
       const resetUserTokensCB: VerifyCallback = async (err, decoded) => {
-        if (err) return res.sendStatus(401);
+        if (err) return res.sendStatus(403);
 
         /**
          *! Finding the hacked user and resetting all active sessions
@@ -44,7 +44,7 @@ router.post("/", async (req, res) => {
         resetUserTokensCB
       );
 
-      return res.sendStatus(401);
+      return res.sendStatus(403);
     }
 
     //* User exists for the issued refresh token
@@ -61,7 +61,7 @@ router.post("/", async (req, res) => {
         await foundUser.save();
       }
       if (err || (<TokenDataType>decoded).username !== foundUser.username)
-        return res.sendStatus(401);
+        return res.sendStatus(403);
 
       const tokenData: TokenDataType = {
         userId: foundUser._id,
@@ -73,7 +73,9 @@ router.post("/", async (req, res) => {
       foundUser.refreshToken = [...newRefTokenArray, refreshToken];
       await foundUser.save();
 
-      return res.status(200).json({ error: false, accessToken, refreshToken });
+      return res
+        .status(200)
+        .json({ error: false, user: foundUser, accessToken, refreshToken });
     };
 
     jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, issueNewTokenCB);

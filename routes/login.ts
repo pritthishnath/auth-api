@@ -27,7 +27,7 @@ router.post("/", async (req, res) => {
 
     if (!pswMatch) {
       return res
-        .status(401)
+        .status(403)
         .json({ error: true, message: "Invalid credentials!" });
     }
 
@@ -42,7 +42,7 @@ router.post("/", async (req, res) => {
 
     await user.save();
 
-    res.status(200).json({ error: false, accessToken, refreshToken });
+    res.status(200).json({ error: false, user, accessToken, refreshToken });
   } catch (error) {
     res.sendStatus(500);
   }
