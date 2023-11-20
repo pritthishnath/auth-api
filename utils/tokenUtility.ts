@@ -4,7 +4,7 @@ export function generateToken(data: object, type?: string): string | string[] {
   switch (type) {
     case "access":
       return jwt.sign(data, process.env.ACCESS_TOKEN_SECRET, {
-        expiresIn: "10m",
+        expiresIn: "5m",
       });
 
     case "refresh":
@@ -14,7 +14,7 @@ export function generateToken(data: object, type?: string): string | string[] {
 
     default:
       const accessToken = jwt.sign(data, process.env.ACCESS_TOKEN_SECRET, {
-        expiresIn: "10m",
+        expiresIn: "5m",
       });
 
       const refreshToken = jwt.sign(data, process.env.REFRESH_TOKEN_SECRET, {

@@ -11,11 +11,11 @@ import { generateToken } from "../utils";
 const router = Router();
 
 router.post("/", async (req, res) => {
-  const { refreshToken } = req.body;
+  const refreshToken = req.body["refreshToken"];
   try {
     if (!refreshToken) return res.sendStatus(403);
 
-    const foundUser = await UserModel.findOne({ refreshToken }).exec();
+    const foundUser = await UserModel.findOne({ refreshToken });
 
     if (!foundUser) {
       //! Refresh token reuse detected!

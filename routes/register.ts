@@ -11,7 +11,7 @@ import { TokenDataType } from "../types/types";
 const router = Router();
 
 router.post("/", async (req, res) => {
-  const { name, username, email, password } = req.body;
+  const { username, email, password } = req.body;
 
   try {
     const user = await UserModel.exists({ $or: [{ email }, { username }] });
@@ -23,7 +23,6 @@ router.post("/", async (req, res) => {
     }
 
     const newUserData = {
-      name,
       username,
       email,
       password: hashPassword(password),
