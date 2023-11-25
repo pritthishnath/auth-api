@@ -141,6 +141,8 @@ router.post("/:stage", validate(), async (req: Request, res: Response) => {
         password: "",
       };
 
+      console.log(process.env.EMAIL_HOST, process.env.EMAIL_USER);
+
       await mailTransporter.sendMail({
         from: '"Notes Keeper" <no-reply@pnath.in>', // sender address
         to: email, // list of receivers
