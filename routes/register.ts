@@ -22,7 +22,7 @@ import { TokenDataType } from "../types/types";
 const router = Router();
 
 const mailTransporter = nodemailer.createTransport({
-  host: process.env.EMAIL_HOST,
+  host: "smtp.zoho.in",
   port: 465,
   secure: true,
   auth: {
