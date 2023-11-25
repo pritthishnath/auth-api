@@ -157,6 +157,7 @@ router.post("/:stage", validate(), async (req: Request, res: Response) => {
         serverKey: generateServerKey(),
       });
     } catch (error) {
+      console.log(error);
       jsonError(res, 500);
     }
   } else if (stage === "2") {
