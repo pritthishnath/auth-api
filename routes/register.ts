@@ -3,12 +3,9 @@
  */
 
 import { NextFunction, Request, Response, Router } from "express";
-import {
-  ContextRunner,
-  checkSchema,
-  validationResult,
-} from "express-validator";
+import { checkSchema, validationResult } from "express-validator";
 import nodemailer from "nodemailer";
+import dotenv from "dotenv";
 import { UserModel } from "../models/User";
 import {
   hashPassword,
@@ -21,13 +18,15 @@ import { TokenDataType } from "../types/types";
 
 const router = Router();
 
+dotenv.config();
+
 const mailTransporter = nodemailer.createTransport({
-  host: "smtp.zoho.in",
+  host: process.env.EMAIL_HOST,
   port: 465,
   secure: true,
   auth: {
-    user: `${process.env.EMAIL_USER}`,
-    pass: `${process.env.EMAIL_PWD}`,
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PWD,
   },
 });
 
