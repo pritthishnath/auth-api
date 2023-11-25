@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
+import { jsonError } from "../utils";
 
 type TokenDataType = {
   userId: string;
@@ -21,10 +22,7 @@ export function verifyToken(req: Request, res: Response, next: NextFunction) {
         next();
       }
     } catch (error) {
-      return res
-        .status(401)
-        .json({ error: true, message: "Unauthorized access!" });
+      return jsonError(res, 401, "Unauthorized, try again");
     }
-  } else
-    return res.status(403).json({ error: true, message: "Forbidden access!" });
+  } else return jsonError(res, 403, "Please login and try again");
 }

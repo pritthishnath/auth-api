@@ -6,6 +6,9 @@ declare global {
       REFRESH_TOKEN_SECRET: string;
       CIPHER_SECRET: string;
       PORT: number;
+      EMAIL_HOST: string;
+      EMAIL_USER: string;
+      EMAIL_PWD: string;
     }
   }
 }

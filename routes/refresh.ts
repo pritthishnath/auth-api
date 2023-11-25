@@ -6,14 +6,14 @@ import { Router } from "express";
 import { UserModel } from "../models/User";
 import jwt, { VerifyCallback } from "jsonwebtoken";
 import { TokenDataType } from "../types/types";
-import { generateToken } from "../utils";
+import { generateToken, jsonError } from "../utils";
 
 const router = Router();
 
 router.post("/", async (req, res) => {
   const refreshToken = req.body["refreshToken"];
   try {
-    if (!refreshToken) return res.sendStatus(403);
+    if (!refreshToken) return jsonError(res, 403, "Forbidden access!");
 
     const foundUser = await UserModel.findOne({ refreshToken });
 
@@ -21,7 +21,7 @@ router.post("/", async (req, res) => {
       //! Refresh token reuse detected!
 
       const resetUserTokensCB: VerifyCallback = async (err, decoded) => {
-        if (err) return res.sendStatus(403);
+        if (err) return jsonError(res, 403, "Forbidden access!");
 
         /**
          *! Finding the hacked user and resetting all active sessions
@@ -44,7 +44,7 @@ router.post("/", async (req, res) => {
         resetUserTokensCB
       );
 
-      return res.sendStatus(403);
+      return jsonError(res, 403, "Forbidden access!");
     }
 
     //* User exists for the issued refresh token
@@ -61,7 +61,7 @@ router.post("/", async (req, res) => {
         await foundUser.save();
       }
       if (err || (<TokenDataType>decoded).username !== foundUser.username)
-        return res.sendStatus(403);
+        return jsonError(res, 403, "Forbidden access!");
 
       const tokenData: TokenDataType = {
         userId: foundUser._id,
@@ -80,7 +80,7 @@ router.post("/", async (req, res) => {
 
     jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, issueNewTokenCB);
   } catch (error) {
-    return res.sendStatus(500);
+    return jsonError(res, 500);
   }
 });
 

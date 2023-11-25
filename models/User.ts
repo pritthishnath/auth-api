@@ -5,6 +5,8 @@ const UserSchema = new Schema(
     username: String,
     email: String,
     password: String,
+    otp: String,
+    isActive: Boolean,
     refreshToken: [String],
   },
   { timestamps: true }
@@ -15,6 +17,8 @@ export type TUser = {
   username: string;
   email: string;
   password: string;
+  otp: string;
+  isActive: boolean;
   refreshToken: string[];
 };
 

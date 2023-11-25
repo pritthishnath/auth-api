@@ -4,6 +4,7 @@
 
 import { Router } from "express";
 import { UserModel } from "../models/User";
+import { jsonError } from "../utils";
 
 const router = Router();
 
@@ -20,7 +21,7 @@ router.get("/", async (req, res) => {
       res.status(200).json({ error: false, user: foundUser });
     }
   } catch (error) {
-    res.sendStatus(500);
+    jsonError(res, 400, "Please login and try again");
   }
 });
 

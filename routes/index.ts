@@ -4,7 +4,7 @@ import loginController from "./login";
 import refreshController from "./refresh";
 import logoutController from "./logout";
 import userController from "./user";
-import { encrypt, randomString } from "../utils";
+import { encrypt, generateServerKey, randomString } from "../utils";
 import { serverTokens } from "../constants";
 import { checkServerToken, removeExistingRefreshToken } from "../middlewares";
 import { verifyToken } from "../middlewares/verifyToken";
@@ -23,23 +23,11 @@ router.use("/logout", logoutController);
 router.use("/user", verifyToken, userController);
 
 router.get("/", (req, res) => {
-  res.json({
-    message: "Authentication service running",
-  });
+  res.json({ message: "Authentication service running" });
 });
 
 router.get("/server-key", (req, res) => {
-  const token = randomString(5);
-
-  const key = encrypt(token);
-
-  serverTokens.set(key, token);
-
-  setTimeout(() => {
-    serverTokens.delete(key);
-  }, 60 * 1000 * 5); // Unused server tokens expires in 5 minutes
-
-  res.json({ error: false, serverKey: key });
+  res.json({ error: false, serverKey: generateServerKey() });
 });
 
 export default router;

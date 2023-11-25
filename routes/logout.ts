@@ -4,6 +4,7 @@
 
 import { Router } from "express";
 import { UserModel } from "../models/User";
+import { jsonError } from "../utils";
 
 const router = Router();
 
@@ -25,7 +26,7 @@ router.post("/", async (req, res) => {
 
     return res.sendStatus(200);
   } catch (error) {
-    return res.sendStatus(500);
+    return jsonError(res, 500);
   }
 });
 

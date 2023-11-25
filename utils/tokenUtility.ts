@@ -1,4 +1,7 @@
 import jwt from "jsonwebtoken";
+import { serverTokens } from "../constants";
+import { encrypt } from "./cipherUtility";
+import { randomString } from "./stringUtility";
 
 export function generateToken(data: object, type?: string): string | string[] {
   switch (type) {
@@ -23,4 +26,18 @@ export function generateToken(data: object, type?: string): string | string[] {
 
       return [accessToken, refreshToken];
   }
+}
+
+export function generateServerKey(): string {
+  const token = randomString(5);
+
+  const key = encrypt(token);
+
+  serverTokens.set(key, token);
+
+  setTimeout(() => {
+    serverTokens.delete(key);
+  }, 60 * 1000 * 5); // Unused server tokens expires in 5 minutes
+
+  return key;
 }

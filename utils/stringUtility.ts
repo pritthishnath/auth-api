@@ -11,3 +11,16 @@ export function randomString(length: number): string {
   }
   return result;
 }
+
+export function randomPin(length: number): string {
+  let result = "";
+
+  const characters = "0123456789";
+
+  let counter = 0;
+  while (counter < length) {
+    result += characters.charAt(Math.floor(Math.random() * characters.length));
+    counter++;
+  }
+  return result;
+}
