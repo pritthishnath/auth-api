@@ -8,7 +8,7 @@ type TokenDataType = {
 };
 
 export function verifyToken(req: Request, res: Response, next: NextFunction) {
-  let token = req.headers["authorization-token"] as string;
+  let token = req.headers["x-authorization-token"] as string;
 
   if (token !== "undefined") {
     try {
