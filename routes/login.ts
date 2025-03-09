@@ -2,13 +2,9 @@
  * @route POST /login
  */
 
-import { NextFunction, Request, Response, Router } from "express";
-import {
-  ContextRunner,
-  checkSchema,
-  validationResult,
-} from "express-validator";
-import { UserModel } from "../models/User";
+import { Request, Response, Router } from "express";
+import { checkSchema, validationResult } from "express-validator";
+import UserModel from "../models/User";
 import { comparePassword, generateToken, jsonError } from "../utils";
 import { TokenDataType } from "../types/types";
 

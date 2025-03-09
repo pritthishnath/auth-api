@@ -3,7 +3,7 @@
  */
 
 import { Router } from "express";
-import { UserModel } from "../models/User";
+import UserModel from "../models/User";
 import { jsonError } from "../utils";
 
 const router = Router();

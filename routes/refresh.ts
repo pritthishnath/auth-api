@@ -3,7 +3,7 @@
  */
 
 import { Router } from "express";
-import { UserModel } from "../models/User";
+import UserModel from "../models/User";
 import jwt, { VerifyCallback } from "jsonwebtoken";
 import { TokenDataType } from "../types/types";
 import { generateToken, jsonError } from "../utils";

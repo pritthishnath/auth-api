@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { UserModel } from "../models/User";
+import UserModel from "../models/User";
 
 export async function removeExistingRefreshToken(
   req: Request,

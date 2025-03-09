@@ -25,4 +25,6 @@ db.connectMongoose();
 
 app.use("/", router);
 
-app.listen(port);
+app.listen(port, () => {
+  console.log(`Auth service running on port ${port}`);
+});

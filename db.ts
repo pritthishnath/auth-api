@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 
-export = {
+const db = {
   connectMongoose: async function () {
     try {
-      await mongoose.connect(process.env.MONGO_URI);
+      await mongoose.connect(process.env.MONGO_URI, { dbName: "auth_service" });
       console.log(
         `${
           process.env.PORT || 3102
@@ -15,3 +15,5 @@ export = {
     }
   },
 };
+
+export default db;
