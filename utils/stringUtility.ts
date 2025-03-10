@@ -6,10 +6,10 @@ export function randomString(length: number): string {
   const charset =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-  const values = new Uint32Array(length);
-  crypto.getRandomValues(values);
+  const buffer = crypto.randomBytes(length);
+
   for (let i = 0; i < length; i++) {
-    result += charset[values[i] % charset.length];
+    result += charset[buffer[i] % charset.length];
   }
   return result;
 }
