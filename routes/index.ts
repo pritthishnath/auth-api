@@ -5,19 +5,20 @@ import refreshController from "./refresh";
 import logoutController from "./logout";
 import userController from "./user";
 import { generateServerKey } from "../utils";
-import { checkServerToken, removeExistingRefreshToken } from "../middlewares";
+import {  removeExistingRefreshToken } from "../middlewares";
 import { verifyToken } from "../middlewares/verifyToken";
 import { setDeviceKey } from "../middlewares/setDeviceKey";
+import tokenRouter from "./token";
 
 const router = Router();
 
 router.use(
   "/register",
   removeExistingRefreshToken,
-  checkServerToken,
   setDeviceKey,
   registerController
 );
+router.use("/token", setDeviceKey, tokenRouter)
 router.use("/login", removeExistingRefreshToken, loginController);
 router.use("/refresh", refreshController);
 router.use("/logout", logoutController);

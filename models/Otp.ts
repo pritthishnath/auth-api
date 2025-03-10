@@ -2,7 +2,7 @@ import { Model, model, Schema, Types } from "mongoose";
 import crypto from "crypto";
 
 export interface IOTP extends Document {
-  userId: string;
+  userId: Types.ObjectId;
   otp: string;
   deviceKey: string;
   createdAt: Date;
@@ -16,12 +16,11 @@ export interface IOTPModel extends Model<IOTP> {
 }
 
 // OTP Schema
-const OTPSchema: Schema = new Schema({
+const OTPSchema: Schema = new Schema<IOTP>({
   userId: {
     type: Schema.Types.ObjectId,
     ref: "user",
     required: true,
-    index: true,
   },
   otp: {
     type: String,

@@ -20,6 +20,7 @@ router.get("/", async (req, res) => {
 
       res.status(200).json({ error: false, user: foundUser });
     }
+    res.status(400);
   } catch (error) {
     jsonError(res, 400, "Please login and try again");
   }

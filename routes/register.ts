@@ -14,6 +14,7 @@ import {
   sendLoginOtpEmail,
   sendRegistrationOtpEmail,
 } from "../utils/otpTemplates";
+import AuthCode from "../models/AuthCode";
 
 const router = Router();
 
@@ -161,7 +162,7 @@ router.post("/:stage", validate(), async (req: Request, res: Response) => {
 
       res.status(200).json({
         error: false,
-        user: newUserData,
+        user: newUserData.toJSON(),
         serverKey: generateServerKey(),
       });
     } catch (error) {
@@ -192,7 +193,7 @@ router.post("/:stage", validate(), async (req: Request, res: Response) => {
 
       return res.status(200).json({
         error: false,
-        user: foundedUser,
+        user: foundedUser.toJSON(),
         serverKey: generateServerKey(),
       });
     } catch (error) {
@@ -228,12 +229,20 @@ router.post("/:stage", validate(), async (req: Request, res: Response) => {
       const [accessToken, refreshToken] = generateToken(tokenData);
 
       foundedUser.refreshToken.push(refreshToken);
+      const code = await AuthCode.generate(
+        foundedUser._id,
+        deviceKey,
+        accessToken,
+        refreshToken
+      );
 
       await foundedUser.save();
 
-      res
-        .status(200)
-        .json({ error: false, user: foundedUser, accessToken, refreshToken });
+      res.status(200).json({
+        error: false,
+        user: foundedUser.toJSON(),
+        code,
+      });
     } catch (error) {
       console.log(error);
       jsonError(res, 500);
