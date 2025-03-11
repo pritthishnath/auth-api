@@ -44,4 +44,4 @@ jobs:
           script: |
             cd ${{ secrets.DIR_PATH }}
             git stash && git pull origin main
-            sudo pm2 start
+            pm2 start
