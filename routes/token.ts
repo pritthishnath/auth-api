@@ -15,7 +15,7 @@ tokenRouter.get("/", async (req, res) => {
 
   try {
     if (!code) {
-      return jsonError(res, 404, "Please login and try again");
+      return jsonError(res, 403, "Please login and try again");
     }
 
     const codeDoc = await AuthCode.findOne({
@@ -24,16 +24,14 @@ tokenRouter.get("/", async (req, res) => {
     }).lean();
 
     if (!codeDoc) {
-      return jsonError(res, 404, "Please login and try again");
+      return jsonError(res, 403, "Please login and try again");
     }
 
-    res
-      .status(200)
-      .json({
-        error: false,
-        accessToken: codeDoc.accessToken,
-        refreshToken: codeDoc.refreshToken,
-      });
+    res.status(200).json({
+      error: false,
+      accessToken: codeDoc.accessToken,
+      refreshToken: codeDoc.refreshToken,
+    });
   } catch (error) {
     jsonError(res, 400, "Please login and try again");
   }
