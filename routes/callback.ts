@@ -26,6 +26,10 @@ callbackRouter.get("/:provider", async (req, res) => {
     deviceKey = null;
   }
 
+  console.log("Code", code);
+  console.log("Device Key", deviceKey);
+  console.log("Client Origin", clientOrigin);
+
   try {
     if (!code) {
       return jsonError(res, 404, "Code not found");
@@ -37,6 +41,8 @@ callbackRouter.get("/:provider", async (req, res) => {
         client_secret: process.env.GITHUB_CLIENT_SECRET,
         code,
       };
+
+      console.log("Accessing Github API", body);
 
       const tokenResponse = await fetch(
         "https://github.com/login/oauth/access_token",
@@ -53,6 +59,7 @@ callbackRouter.get("/:provider", async (req, res) => {
       const tokenData = await tokenResponse.json();
       const githubAccessToken = tokenData.access_token;
 
+      console.log("Github Access Token", githubAccessToken);
       const userResponse = await fetch("https://api.github.com/user", {
         headers: {
           Authorization: `Bearer ${githubAccessToken}`,
@@ -60,6 +67,7 @@ callbackRouter.get("/:provider", async (req, res) => {
       });
 
       const userData = await userResponse.json();
+      console.log("Github User Data", userData);
 
       if (!userData) {
         return jsonError(res, 404, "Github User not found");
