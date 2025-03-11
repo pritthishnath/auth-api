@@ -144,7 +144,12 @@ router.post("/:stage", validate(), async (req: Request, res: Response) => {
           serverKey: generateServerKey(),
         });
       } else if (userRegistered?.isActive) {
-        return jsonError(res, 409, "User already registered!");
+        return jsonError(res, 409, "User already registered!", [
+          {
+            path: "username",
+            msg: "User already registered!",
+          },
+        ]);
       }
 
       const newUserData = new UserModel({
@@ -179,7 +184,9 @@ router.post("/:stage", validate(), async (req: Request, res: Response) => {
       });
 
       if (!foundedUser) {
-        return jsonError(res, 404, "Please register first!");
+        return jsonError(res, 404, "Please register first!", [
+          { path: "email", msg: "Please register first!" },
+        ]);
       }
 
       const regeneratedOtp = await OTP.generateOTP(foundedUser._id, deviceKey);
@@ -208,7 +215,9 @@ router.post("/:stage", validate(), async (req: Request, res: Response) => {
       });
 
       if (!foundedUser) {
-        return jsonError(res, 404, "Invalid credentials!");
+        return jsonError(res, 404, "Invalid credentials!", [
+          { path: "otp", msg: "Invalid credentials!" },
+        ]);
       }
 
       const isValid = await OTP.verifyOTP(foundedUser._id, otp, deviceKey);
