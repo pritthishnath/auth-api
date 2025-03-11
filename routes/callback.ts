@@ -28,7 +28,7 @@ callbackRouter.get("/:provider", async (req, res) => {
 
   try {
     if (!code) {
-      return jsonError(res, 404, "Please login and try again");
+      return jsonError(res, 404, "Code not found");
     }
 
     if (provider === "github") {
@@ -102,7 +102,7 @@ callbackRouter.get("/:provider", async (req, res) => {
       return jsonError(res, 404, "Provider not found");
     }
   } catch (error) {
-    jsonError(res, 400, "Please login and try again");
+    jsonError(res, 500, "Server error!");
   }
 });
 
